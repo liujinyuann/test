@@ -1,0 +1,16 @@
+C:\個人フォルダ\王淵深\自動化テスト\vbsource\UFT_Test\UFT_Test\bin\Debug\UFT_Test.exe.config
+C:\個人フォルダ\王淵深\自動化テスト\vbsource\UFT_Test\UFT_Test\bin\Debug\UFT_Test.exe.manifest
+C:\個人フォルダ\王淵深\自動化テスト\vbsource\UFT_Test\UFT_Test\bin\Debug\UFT_Test.application
+C:\個人フォルダ\王淵深\自動化テスト\vbsource\UFT_Test\UFT_Test\bin\Debug\UFT_Test.exe
+C:\個人フォルダ\王淵深\自動化テスト\vbsource\UFT_Test\UFT_Test\bin\Debug\UFT_Test.pdb
+C:\個人フォルダ\王淵深\自動化テスト\vbsource\UFT_Test\UFT_Test\bin\Debug\UFT_Test.xml
+C:\個人フォルダ\王淵深\自動化テスト\vbsource\UFT_Test\UFT_Test\obj\Debug\UFT_Test.viewForm.resources
+C:\個人フォルダ\王淵深\自動化テスト\vbsource\UFT_Test\UFT_Test\obj\Debug\UFT_Test.meisaiForm.resources
+C:\個人フォルダ\王淵深\自動化テスト\vbsource\UFT_Test\UFT_Test\obj\Debug\UFT_Test.Resources.resources
+C:\個人フォルダ\王淵深\自動化テスト\vbsource\UFT_Test\UFT_Test\obj\Debug\UFT_Test.vbproj.GenerateResource.cache
+C:\個人フォルダ\王淵深\自動化テスト\vbsource\UFT_Test\UFT_Test\obj\Debug\UFT_Test.vbproj.CoreCompileInputs.cache
+C:\個人フォルダ\王淵深\自動化テスト\vbsource\UFT_Test\UFT_Test\obj\Debug\UFT_Test.exe.manifest
+C:\個人フォルダ\王淵深\自動化テスト\vbsource\UFT_Test\UFT_Test\obj\Debug\UFT_Test.application
+C:\個人フォルダ\王淵深\自動化テスト\vbsource\UFT_Test\UFT_Test\obj\Debug\UFT_Test.exe
+C:\個人フォルダ\王淵深\自動化テスト\vbsource\UFT_Test\UFT_Test\obj\Debug\UFT_Test.xml
+C:\個人フォルダ\王淵深\自動化テスト\vbsource\UFT_Test\UFT_Test\obj\Debug\UFT_Test.pdb
