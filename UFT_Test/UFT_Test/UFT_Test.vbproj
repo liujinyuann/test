@@ -63,7 +63,7 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>233ECB34754C2917B4B89A26A2589E755693917E</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>F413B5FDE931010580243C430C14E9C658A3AF03</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>UFT_Test_TemporaryKey.pfx</ManifestKeyFile>
@@ -154,6 +154,7 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
+    <None Include="UFT_Test_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6">
