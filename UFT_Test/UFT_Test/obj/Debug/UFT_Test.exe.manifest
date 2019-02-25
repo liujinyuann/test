@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="UFT_Test.exe" size="27648">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="UFT_Test.exe" size="27616">
       <assemblyIdentity name="UFT_Test" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>e5F2BxhEGlacl3HzfFRorLgca2+qTHU1g7xqVIS8aIE=</dsig:DigestValue>
+        <dsig:DigestValue>4xxnHUwl8/HanUhSKKqZ+IcWhMtBfIgk5XUmFRVPyFM=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

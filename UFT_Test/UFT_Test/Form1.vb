@@ -89,6 +89,14 @@
         dr("年齢") = "26"
         dr("部門") = "人事部"
         dt.Rows.Add(dr)
+		
+		dr = dt.NewRow
+        dr("コード") = "10010"
+        dr("名前") = "佐々木8"
+        dr("生年月日") = "19920706"
+        dr("年齢") = "22"
+        dr("部門") = "人事部"
+        dt.Rows.Add(dr)
 
         DataGridView1.DataSource = dt
     End Sub

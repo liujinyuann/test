@@ -63,7 +63,7 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>F413B5FDE931010580243C430C14E9C658A3AF03</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>771C6E238A03974705AB6561D0753E0A21D2B3F1</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>UFT_Test_TemporaryKey.pfx</ManifestKeyFile>
