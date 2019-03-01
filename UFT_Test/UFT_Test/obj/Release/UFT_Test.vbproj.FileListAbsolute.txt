@@ -1,0 +1,5 @@
+D:\hilbit\test\UFT_Test\UFT_Test\obj\Release\UFT_Test.vbprojResolveAssemblyReference.cache
+D:\hilbit\test\UFT_Test\UFT_Test\obj\Release\UFT_Test.viewForm.resources
+D:\hilbit\test\UFT_Test\UFT_Test\obj\Release\UFT_Test.meisaiForm.resources
+D:\hilbit\test\UFT_Test\UFT_Test\obj\Release\UFT_Test.Resources.resources
+D:\hilbit\test\UFT_Test\UFT_Test\obj\Release\UFT_Test.vbproj.GenerateResource.Cache
