@@ -47,10 +47,10 @@ public class AspNetTest extends Thread {
 		}
 		String strPass = strFilePass.concat("\\pic\\").concat(dataFrom.getStrGensin()).concat("\\");
 		// chromedriverサービスアドレス
-		System.setProperty("webdriver.chrome.driver", "D:\\software\\chromedriver_win32\\chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", "D:\\chromedriver\\chromedriver.exe");
 		// WebDriverの対象
 		WebDriver driver;
-		// アクションrの対象
+		// アクションの対象
 		Actions action;
 		// 画像のファイル
 		File scrFile;
