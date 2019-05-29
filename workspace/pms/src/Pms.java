@@ -168,8 +168,7 @@ public class Pms extends Thread {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		Calendar calc = Calendar.getInstance();
 
-//		for (int i = 0; i < listAll.size(); i++) {
-		for (int i = 0; i < 0; i++) {
+		for (int i = 0; i < listAll.size(); i++) {
 
 			List<Map> list = listAll.get(i);
 			for (int j = 0; j < list.size(); j++) {
