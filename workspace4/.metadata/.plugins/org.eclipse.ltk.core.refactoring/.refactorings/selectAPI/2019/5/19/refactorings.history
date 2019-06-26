@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;SelectApi.java&apos; to &apos;selectConstant/src&apos;&#x0D;&#x0A;- 元のプロジェクト: &apos;selectAPI&apos;&#x0D;&#x0A;- 宛先要素: &apos;selectConstant/src&apos;&#x0D;&#x0A;- オリジナル要素: &apos;selectAPI.SelectApi.java&apos;" description="コンパイル単位をコピー" destination="=selectConstant/src" element1="/src&lt;selectAPI{SelectApi.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1557470595971" units="1" version="1.0"/>
+</session>

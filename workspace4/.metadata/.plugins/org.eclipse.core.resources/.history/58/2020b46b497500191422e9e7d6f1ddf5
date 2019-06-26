@@ -1,0 +1,611 @@
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+public class selectConstant {
+
+	static LinkedHashMap<String, ArrayList<String>> mapStrArr = new LinkedHashMap<String, ArrayList<String>>();
+	static ArrayList<String> strIncludecArray = new ArrayList<String>();
+	static ArrayList<String> strDefineArray = new ArrayList<String>();
+	static String strTopNm;
+
+	private static JFrame jf_1; // フレーム
+
+	private static JLabel jl_1; // ラベル
+
+	private static JLabel jl_title; // タイトルラベル
+	private static JLabel jl_date; // システム日付
+	private static JLabel jl_inFolder; // 入力フォルダラベル
+	private static JLabel jl_outFile; // 出力ファイルラベル
+
+	private static JTextField jt_inFolder; // 入力フォルダ
+	private static JTextField jt_outFile; // 出力ファイル
+
+	private static JButton jb_start; // テスト開始ボタンー
+	private static JButton jb_clear; // クリアボタンー
+	private static JButton jb_inFolder; // 入力フォルダ選択ボタンー
+	private static JButton jb_outFile; // 出力ファイル選択ボタンー
+
+	public static void main(String[] args) {
+
+		jl_1 = new JLabel();
+		Font font = new Font("ＭＳ Ｐゴシック", Font.PLAIN, 20); // フォントの設定
+		Font titleFont = new Font("ＭＳ ゴシック", Font.BOLD, 22); // フォントの設定
+		jf_1 = new JFrame("constantを抽出");
+		jf_1.setSize(600, 300);
+
+		jl_title = new JLabel("constantを抽出");
+		jl_title.setHorizontalAlignment(JTextField.CENTER);
+		jl_title.setBounds(0, 10, 600, 30);
+		jl_title.setFont(titleFont);
+		jl_1.add(jl_title);
+
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		jl_date = new JLabel(format.format(new Date()));
+		jl_date.setHorizontalAlignment(JTextField.CENTER);
+		jl_date.setBounds(480, 10, 100, 15);
+		jl_date.setFont(font);
+		jl_1.add(jl_date);
+
+		jl_inFolder = new JLabel("入力フォルダ：");
+		jl_inFolder.setHorizontalAlignment(JTextField.RIGHT);
+		jl_inFolder.setBounds(25, 50, 160, 30);
+		jl_inFolder.setFont(font);
+		jl_1.add(jl_inFolder);
+
+		jt_inFolder = new JTextField("");
+		jt_inFolder.setBounds(200, 50, 260, 30);
+		jt_inFolder.setFont(font);
+//		jt_inFolder.setEditable(false);
+		jt_inFolder.setBackground(Color.WHITE);
+		jl_1.add(jt_inFolder);
+
+		jb_inFolder = new JButton("選択");
+		jb_inFolder.setBounds(470, 50, 75, 30);
+		jb_inFolder.setFont(font);
+		jl_1.add(jb_inFolder);
+
+		jl_outFile = new JLabel("出力ファイル：");
+		jl_outFile.setHorizontalAlignment(JTextField.RIGHT);
+		jl_outFile.setBounds(25, 90, 160, 30);
+		jl_outFile.setFont(font);
+		jl_1.add(jl_outFile);
+
+		jt_outFile = new JTextField("D:\\constant一覧.xlsx");
+		jt_outFile.setBounds(200, 90, 260, 30);
+		jt_outFile.setFont(font);
+//		jt_outFile.setEditable(false);
+		jt_outFile.setBackground(Color.WHITE);
+		jl_1.add(jt_outFile);
+
+		jb_outFile = new JButton("選択");
+		jb_outFile.setBounds(470, 90, 75, 30);
+		jb_outFile.setFont(font);
+		jl_1.add(jb_outFile);
+
+		jb_start = new JButton("抽出開始");
+		jb_start.setBounds(120, 150, 160, 40);
+		jb_start.setFont(font);
+		jl_1.add(jb_start);
+
+		jb_clear = new JButton("クリア");
+		jb_clear.setBounds(320, 150, 160, 40);
+		jb_clear.setFont(font);
+		jl_1.add(jb_clear);
+
+		jf_1.add(jl_1);
+		jf_1.setVisible(true);
+		jf_1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		jf_1.setResizable(false);
+		jf_1.setLocation(400, 200);
+
+		// 読み込み開始ボタンーを押下
+		ActionListener jb_start_ls = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				mapStrArr = new LinkedHashMap<String, ArrayList<String>>();
+				strIncludecArray = new ArrayList<String>();
+				String strPath = jt_inFolder.getText();
+				try {
+					getFile(strPath, 0);
+					strTopNm = strPath.substring(strPath.lastIndexOf("\\") + 1, strPath.length());
+					writeExcel(mapStrArr);
+					JOptionPane.showMessageDialog(null, "Excleファイル出力しました。", "information", JOptionPane.PLAIN_MESSAGE);
+				} catch (IOException e) {
+					JOptionPane.showMessageDialog(null, "Excleファイル出力失敗。", "information", JOptionPane.PLAIN_MESSAGE);
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "Excleファイル出力失敗。", "information", JOptionPane.PLAIN_MESSAGE);
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
+
+			}
+		};
+
+		// クリアボタンーを押下
+		ActionListener jb_clear_ls = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				jt_inFolder.setText(""); // 入力フォルダ
+				jt_outFile.setText(""); // 出力ファイル
+			}
+		};
+
+		JFileChooser jfcInFolder = new JFileChooser();
+		// 入力フォルダの選択ボタンーを押下
+		ActionListener jb_inFolder_ls = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+				// 分割の場合
+				jfcInFolder.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+				int intRetNum = jfcInFolder.showDialog(new JLabel(), "選択");
+				// 選択ボタンーを押下の場合
+				if (intRetNum == 0) {
+					// ファイルを取得する
+					File file = jfcInFolder.getSelectedFile();
+					if (file != null) {
+						jt_inFolder.setText(file.getAbsolutePath());
+						jfcInFolder.setCurrentDirectory(jfcInFolder.getSelectedFile());
+					}
+				}
+			}
+		};
+
+		JFileChooser jfcOutfile = new JFileChooser();
+		// 出力ファイルの選択ボタンーを押下
+		ActionListener jb_outFile_ls = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+				jfcOutfile.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				int intRetNum = jfcOutfile.showDialog(new JLabel(), "選択");
+				// 選択ボタンーを押下の場合
+				if (intRetNum == 0) {
+					// ファイルを取得する
+					File file = jfcOutfile.getSelectedFile();
+					if (file != null) {
+						jt_outFile.setText(file.getAbsolutePath());
+						jfcOutfile.setCurrentDirectory(jfcOutfile.getSelectedFile());
+					}
+				}
+			}
+		};
+
+		// リスナーを追加する
+		jb_start.addActionListener(jb_start_ls);
+		jb_clear.addActionListener(jb_clear_ls);
+		jb_inFolder.addActionListener(jb_inFolder_ls);
+		jb_outFile.addActionListener(jb_outFile_ls);
+
+	}
+
+	private static void getFile(String path, int deep) throws IOException {
+		File file = new File(path);
+		File[] array = file.listFiles();
+		File redFile;
+		InputStreamReader inputReader;
+		BufferedReader bf;
+		ArrayList<String> strArray = new ArrayList<String>();
+
+		for (int i = 0; i < array.length; i++) {
+
+			if (array[i].isFile()) {
+				if (array[i].getName().contains(".h")) {
+					redFile = new File(array[i].getPath());
+					inputReader = new InputStreamReader(new FileInputStream(redFile), "Shift-JIS");
+					bf = new BufferedReader(inputReader);
+					strDefineArray = new ArrayList<String>();
+					String str;
+					while ((str = bf.readLine()) != null) {
+						if (str.replace("	", "").startsWith("#define")) {
+							str = str.replace("#define", "").trim();
+							str = str.replace("	", " ").trim();
+							if (str.contains(" ")) {
+								str = str.substring(0, str.indexOf(" "));
+								strDefineArray.add(str);
+							}
+						} else {
+							continue;
+						}
+					}
+
+				}
+				if (array[i].getName().contains(".pc") || array[i].getName().contains(".c")) {
+					redFile = new File(array[i].getPath());
+					inputReader = new InputStreamReader(new FileInputStream(redFile), "Shift-JIS");
+					bf = new BufferedReader(inputReader);
+					strArray = new ArrayList<String>();
+
+					String str;
+					String strApi;
+					while ((str = bf.readLine()) != null) {
+						if (str.replace("	", "").startsWith("/")) {
+							continue;
+						}
+						if (str.contains("EXEC SQL")) {
+							continue;
+						}
+//						while (str.contains("(") && !str.startsWith("(")) {
+						while (str.contains(" ")) {
+
+							str = str.replace("	", " ");
+							str = str.replace("=", " ");
+							str = str.replace("*", " ");
+							str = str.replace("(", " ");
+							str = str.replace(")", " ");
+							str = str.replace("[", " ");
+							str = str.replace("]", " ");
+							str = str.replace(";", " ");
+
+							if (str.startsWith("\"")) {
+								str = str.substring(str.indexOf("\"") + 1, str.length());
+								str = str.substring(str.indexOf("\"") + 1, str.length());
+								continue;
+							}
+
+							strApi = str.substring(0, str.indexOf(" "));
+							strApi = new StringBuilder(strApi).reverse().toString();
+							if (strApi.contains(" ")) {
+								strApi = strApi.substring(0, strApi.indexOf(" "));
+							} else if (strApi.contains("\"")) {
+								strApi = strApi.substring(0, strApi.indexOf("\""));
+							} else if (strApi.contains(",")) {
+								strApi = strApi.substring(0, strApi.indexOf(","));
+							}
+//							strApi = strApi.replace(")", "");
+//							strApi = strApi.replace("(", "");
+							strApi = new StringBuilder(strApi).reverse().toString();
+//							str = str.substring(str.indexOf(" ") + 1, str.length()).trim();
+							str = str.substring(str.indexOf(" ") + 1, str.length());
+
+//							if (!strApi.matches("[0-9a-zA-Z_(*]*")) {
+//								continue;
+//							}
+
+							if (!strApi.matches("[A-Z_]*")) {
+								continue;
+							}
+							if (strApi.length() <= 1) {
+								continue;
+							}
+							if (strDefineArray.contains(strApi)) {
+								continue;
+							}
+							if ("SQLDA".equals(strApi) || "FILE".equals(strApi) || "NULL".equals(strApi)
+//									|| "BEGIN".equals(strApi) || "DECLARE".equals(strApi) || "SECTION".equals(strApi)
+//									|| "SQLDA".equals(strApi) || "WHENEVER".equals(strApi) || "SQLERROR".equals(strApi)
+//									|| "GOTO".equals(strApi) || "CONNECT".equals(strApi) || "CONTINUE".equals(strApi)
+//									|| "COMMIT".equals(strApi) || "WORK".equals(strApi) || "RELEASE".equals(strApi)
+//									|| "FILE".equals(strApi) || "NULL".equals(strApi) || "SELECT".equals(strApi)
+//									|| "TEKIYO_SM".equals(strApi) || "FROM".equals(strApi)
+//									|| "HM_TOROKU_KIGEN".equals(strApi) || "WHERE".equals(strApi)
+//									|| "TOROKU_KIGEN_DATE".equals(strApi) || "PREPARE".equals(strApi)
+//									|| "CURSOR".equals(strApi) || "FOR".equals(strApi) || "OPEN".equals(strApi)
+//									|| "NOT".equals(strApi) || "FOUND".equals(strApi) || "DO".equals(strApi)
+//									|| "FETCH".equals(strApi) || "INTO".equals(strApi) || "CLOSE".equals(strApi)
+									|| "DO".equals(strApi) || "DO".equals(strApi) || "DO".equals(strApi)) {
+								continue;
+							}
+							if (!strApi.isEmpty()) {
+
+								if (!strArray.contains(strApi)) {
+									strArray.add(strApi);
+								}
+								if (!strIncludecArray.contains(strApi)) {
+									strIncludecArray.add(strApi);
+								}
+								System.out.println(strApi);
+							}
+						}
+					}
+					bf.close();
+					inputReader.close();
+					if (strArray.size() > 0) {
+						mapStrArr.put(array[i].getPath(), strArray);
+					}
+
+				}
+
+			} else if (array[i].isDirectory()) {
+				getFile(array[i].getPath(), deep + 1);
+
+			}
+
+		}
+	}
+
+	public static void writeExcel(Map<String, ArrayList<String>> mapStrArray) throws Exception {
+		// ファイルにデータを書き込むバイトストリーム
+		FileOutputStream fileOut = null;
+		// Excelファイル
+		File exlFile = null;
+		// 座標X
+		int intWriteX = 0;
+		// 座標Y
+		int intWriteY = 0;
+		// ワークブック
+		Workbook workbook = null;
+		// シート
+		Sheet sheet = null;
+		// 行
+		Row row = null;
+		Cell cell;
+		ArrayList<String> strArray;
+		String strKey;
+		String strPath;
+		String[] strSplit;
+		String strShitNamebk = "";
+
+		String[] string_h = { "memchr", "memcmp", "memcpy", "memmove", "memset", "strcat", "strchr", "strcmp",
+				"strcoll", "strcpy", "strcspn", "strerror", "strlen", "strncat", "strncmp", "strncpy", "strpbrk",
+				"strrchr", "strspn", "strstr", "strtok", "strxfrm" };
+		ArrayList<String> arrayListString_h = new ArrayList<String>(Arrays.asList(string_h));
+
+		String[] stdio_h = { "clearerr", "fclose", "feof", "ferror", "fflush", "fgetc", "fgetpos", "fgets", "fopen",
+				"fprintf", "fputc", "fputs", "fread", "freopen", "fscanf", "fseek", "fsetpos", "ftell", "fwrite",
+				"getc", "getchar", "gets", "perror", "printf", "putc", "putchar", "puts", "remove", "rename", "rewind",
+				"scanf", "setbuf", "setvbuf", "snprintf", "sprintf", "sscanf", "tmpfile", "tmpnam", "ungetc",
+				"vfprintf", "vfscanf", "vprintf", "vscanf", "vsnprintf", "vsprintf", "vsscanf", "popen", "pclose" };
+		ArrayList<String> arrayListStdio_h = new ArrayList<String>(Arrays.asList(stdio_h));
+
+		String[] stdlib_h = { "abort", "abs", "atexit", "atof", "atoi", "atol", "atoll", "at_quick_exit", "bsearch",
+				"calloc", "div", "exit", "free", "getenv", "labs", "ldiv", "llabs", "lldiv", "malloc", "mblen",
+				"mbstowcs", "mbtowc", "qsort", "quick_exit", "rand", "realloc", "srand", "strtod", "strtof", "strtol",
+				"strtold", "strtoll", "strtoul", "strtoull", "system", "wcstombs", "wctomb", "_Exit", "itoa" };
+		ArrayList<String> arrayListStdlib_h = new ArrayList<String>(Arrays.asList(stdlib_h));
+
+		String[] signal_h = { "raise", "signal", "sigaction", "sighold", "sigrelse" };
+		ArrayList<String> arrayListSignal_h = new ArrayList<String>(Arrays.asList(signal_h));
+
+		String[] time_h = { "asctime", "clock", "ctime", "difftime", "gmtime", "localtime", "mktime", "strftime",
+				"time" };
+		ArrayList<String> arrayListTime_h = new ArrayList<String>(Arrays.asList(time_h));
+
+		String[] ctype_h = { "isalnum", "isalpha", "isblank", "iscntrl", "isdigit", "isgraph", "islower", "isprint",
+				"ispunct", "isspace", "isupper", "isxdigit", "tolower", "toupper" };
+		ArrayList<String> arrayListCtype_h = new ArrayList<String>(Arrays.asList(ctype_h));
+
+		String[] locale_h = { "localeconv", "setlocale" };
+		ArrayList<String> arrayListLocale_h = new ArrayList<String>(Arrays.asList(locale_h));
+
+		String[] fenv_h = { "feclearexcept", "fegetenv", "fegetexceptflag", "fegetround", "feholdexcept",
+				"feraiseexcept", "fesetenv", "fesetexceptflag", "fesetround", "fetestexcept", "feupdateenv" };
+		ArrayList<String> arrayListFenv_h = new ArrayList<String>(Arrays.asList(fenv_h));
+
+		String[] stdarg_h = { "va_arg", "va_copy", "va_end", "va_start" };
+		ArrayList<String> arrayListStdarg_h = new ArrayList<String>(Arrays.asList(stdarg_h));
+
+		String[] sys_wait_h = { "wait" };
+		ArrayList<String> arrayListSys_wait_h = new ArrayList<String>(Arrays.asList(sys_wait_h));
+
+		String[] sys_stat_h = { "stat" };
+		ArrayList<String> arrayListSys_stat_h = new ArrayList<String>(Arrays.asList(sys_stat_h));
+
+		String[] netdb_h = { "getservbyname", "gethostbyname" };
+		ArrayList<String> arrayListNetdb_h = new ArrayList<String>(Arrays.asList(netdb_h));
+
+		String[] dirent_h = { "opendir", "readdir", "closedir" };
+		ArrayList<String> arrayListDirent_h = new ArrayList<String>(Arrays.asList(dirent_h));
+
+		String[] sys_socket_h = { "listen", "accept", "close", "gethostname", "socket", "setsockopt", "htons", "bind",
+				"shutdown", "recv", "send" };
+		ArrayList<String> arrayListSys_socket_h = new ArrayList<String>(Arrays.asList(sys_socket_h));
+
+		String[] unistd_h = { "close", "exec", "fork", "open", "read", "select", "sleep", "swab", "write" };
+		ArrayList<String> arrayListUnistd_h = new ArrayList<String>(Arrays.asList(unistd_h));
+
+		String[] keywords = { "sizeof" };
+		ArrayList<String> arrayListKeywords = new ArrayList<String>(Arrays.asList(keywords));
+
+		workbook = new XSSFWorkbook();
+
+		CellStyle titleStyle = workbook.createCellStyle();
+		titleStyle.setAlignment(HorizontalAlignment.CENTER);
+		titleStyle.setBorderTop(BorderStyle.THIN);
+		titleStyle.setBorderBottom(BorderStyle.THIN);
+		titleStyle.setBorderLeft(BorderStyle.THIN);
+		titleStyle.setBorderRight(BorderStyle.THIN);
+		titleStyle.setFillForegroundColor((short) 22);
+		titleStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+		CellStyle cellStyle = workbook.createCellStyle();
+		cellStyle.setAlignment(HorizontalAlignment.CENTER);
+		cellStyle.setBorderTop(BorderStyle.THIN);
+		cellStyle.setBorderBottom(BorderStyle.THIN);
+		cellStyle.setBorderLeft(BorderStyle.THIN);
+		cellStyle.setBorderRight(BorderStyle.THIN);
+
+		sheet = workbook.createSheet("API一覧");
+		row = sheet.createRow(1);
+		cell = row.createCell(1);
+		cell.setCellValue("No.");
+		cell.setCellStyle(titleStyle);
+		cell = row.createCell(2);
+		cell.setCellValue("分類");
+		cell.setCellStyle(titleStyle);
+		cell = row.createCell(3);
+		cell.setCellValue("constant名");
+		cell.setCellStyle(titleStyle);
+		cell = row.createCell(4);
+		cell.setCellValue("備考");
+		cell.setCellStyle(titleStyle);
+
+		String strCellValue = "";
+		String strHead = "";
+		String strBunrui = "";
+		for (int i = 0; i < strIncludecArray.size(); i++) {
+			strCellValue = strIncludecArray.get(i);
+			// 行を作る
+			row = sheet.createRow(i + 2);
+			cell = row.createCell(1);
+			cell.setCellValue(i + 1);
+			cell.setCellStyle(cellStyle);
+			cell = row.createCell(2);
+			cell.setCellStyle(cellStyle);
+			cell = row.createCell(3);
+			cell.setCellValue(strCellValue);
+			cell.setCellStyle(cellStyle);
+
+			if (arrayListString_h.contains(strCellValue)) {
+				strHead = "string.h";
+				strBunrui = "C standard library";
+			} else if (arrayListStdio_h.contains(strCellValue)) {
+				strHead = "stdio.h";
+				strBunrui = "C standard library";
+			} else if (arrayListStdlib_h.contains(strCellValue)) {
+				strHead = "stdlib.h";
+				strBunrui = "C standard library";
+			} else if (arrayListSignal_h.contains(strCellValue)) {
+				strHead = "signal.h";
+				strBunrui = "C standard library";
+			} else if (arrayListTime_h.contains(strCellValue)) {
+				strHead = "time.h";
+				strBunrui = "C standard library";
+			} else if (arrayListCtype_h.contains(strCellValue)) {
+				strHead = "ctype.h";
+				strBunrui = "C standard library";
+			} else if (arrayListLocale_h.contains(strCellValue)) {
+				strHead = "locale.h";
+				strBunrui = "C standard library";
+			} else if (arrayListStdarg_h.contains(strCellValue)) {
+				strHead = "stdarg.h";
+				strBunrui = "C standard library";
+			} else if (arrayListFenv_h.contains(strCellValue)) {
+				strHead = "<fenv.h>";
+				strBunrui = "POSIX standard library";
+			} else if (arrayListSys_socket_h.contains(strCellValue)) {
+				strHead = "<sys/socket.h>";
+				strBunrui = "POSIX standard library";
+			} else if (arrayListDirent_h.contains(strCellValue)) {
+				strHead = "<dirent.h>";
+				strBunrui = "pseudo-standard";
+			} else if (arrayListNetdb_h.contains(strCellValue)) {
+				strHead = "<netdb.h>";
+				strBunrui = "POSIX standard library";
+			} else if (arrayListSys_stat_h.contains(strCellValue)) {
+				strHead = "<sys/stat.h>";
+				strBunrui = "POSIX standard library";
+			} else if (arrayListSys_wait_h.contains(strCellValue)) {
+				strHead = "<sys/wait.h>";
+				strBunrui = "POSIX standard library";
+			} else if (arrayListUnistd_h.contains(strCellValue)) {
+				strHead = "<unistd.h>";
+				strBunrui = "POSIX standard library";
+			} else if (arrayListKeywords.contains(strCellValue)) {
+				strHead = "";
+				strBunrui = "Keywords";
+			} else {
+				strHead = "";
+				strBunrui = "";
+			}
+
+			cell = row.createCell(2);
+			cell.setCellValue(strBunrui);
+			cell.setCellStyle(cellStyle);
+
+			cell = row.createCell(4);
+			cell.setCellValue(strHead);
+			cell.setCellStyle(cellStyle);
+		}
+		sheet.autoSizeColumn(2, true);
+		sheet.autoSizeColumn(3, true);
+		sheet.autoSizeColumn(4, true);
+
+		Object[] keys = mapStrArray.keySet().toArray();
+		for (int i = 0; i < mapStrArray.size(); i++) {
+			strKey = keys[i].toString();
+			strPath = strKey.substring(strKey.indexOf(strTopNm), strKey.length());
+			strPath = strPath.replace("\\", ":");
+			strSplit = strPath.split(":");
+			if (!strShitNamebk.equals(strSplit[1])) {
+				strShitNamebk = strSplit[1];
+				sheet = workbook.createSheet(strShitNamebk);
+				intWriteY = 0;
+			}
+
+			for (int k = 1; k < strSplit.length; k++) {
+
+				if (strSplit[1].equals(strSplit[k]) && intWriteY > 0) {
+					continue;
+				}
+				intWriteX = k - 1;
+				// 行を作る
+				row = sheet.createRow(intWriteY);
+				cell = row.createCell(intWriteX);
+				cell.setCellValue(strSplit[k]);
+
+				intWriteY++;
+			}
+
+			strArray = mapStrArray.get(strKey);
+			intWriteX = intWriteX + 1;
+			for (int j = 0; j < strArray.size(); j++) {
+				// 行を作る
+				row = sheet.createRow(intWriteY);
+				cell = row.createCell(intWriteX);
+				cell.setCellValue(strArray.get(j));
+
+				intWriteY++;
+			}
+
+		}
+
+		exlFile = new File(jt_outFile.getText());
+		try {
+			fileOut = new FileOutputStream(exlFile);
+			// Excelファイル書き込む
+			workbook.write(fileOut);
+
+			workbook.close();
+			System.out.println("----Excleファイル出力しました------");
+		} catch (Exception e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		} finally {
+			if (fileOut != null) {
+				try {
+					fileOut.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+	}
+
+}

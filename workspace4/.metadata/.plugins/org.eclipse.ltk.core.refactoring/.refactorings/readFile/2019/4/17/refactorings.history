@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="2 個の要素を &apos;selectAPI&apos; にコピー&#x0D;&#x0A;- 元のプロジェクト: &apos;readFile&apos;&#x0D;&#x0A;- 宛先要素: &apos;selectAPI&apos;&#x0D;&#x0A;- オリジナル要素:&#x0D;&#x0A;     MANIFEST.MF&#x0D;&#x0A;     lib" description="要素のコピー" element1="MANIFEST.MF" element2="lib" files="1" flags="589830" folders="1" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1555896814250" target="/selectAPI" units="0" version="1.0"/>
+</session>
