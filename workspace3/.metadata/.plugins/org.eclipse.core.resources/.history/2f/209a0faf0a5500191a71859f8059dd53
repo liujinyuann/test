@@ -1,0 +1,65 @@
+import java.util.Iterator;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.Sleeper;
+
+public class test {
+
+	public static void main(String[] args) throws InterruptedException {
+//		// chromedriverサービスアドレス
+//				System.setProperty("webdriver.chrome.driver", "D:\\software\\chromedriver_win32\\chromedriver.exe");
+//				// WebDriverの対象
+//				WebDriver driver = new ChromeDriver();
+//				// アクションの対象
+//				Actions action = new Actions(driver);
+//
+//
+//
+//				driver.get("https://c15rnbfg.mwprem.net/am_bin/amlogin");
+////				driver.manage().window().maximize();
+//
+//				action.sendKeys(driver.findElement(By.name("am_authid")), "jinyuan.liu").perform();
+//				action.sendKeys(driver.findElement(By.name("am_authpasswd")), "ohcc20151001").perform();
+//
+//				WebElement mySelectElm = driver.findElement(By.cssSelector("[tabindex=\"3\"]"));
+//
+//				action.clickAndHold(mySelectElm).perform();
+//
+////				mySelectElm.click();
+////				mySelectElm.sendKeys(Keys.DOWN);
+////				mySelectElm.click();
+//
+//
+//				action.moveToElement(driver.findElement(By.cssSelector("[value=\"  ログイン  \"]"))).perform();
+////				action.moveToElement(driver.findElement(By.cssSelector("[onclick=\"submitForm('login');\"]"))).perform();
+////				action.moveToElement(driver.findElement(By.cssSelector("[tabindex=\"6\"]"))).perform();
+////				action.click().perform();
+
+		System.setProperty("webdriver.chrome.driver", "D:\\software\\chromedriver_win32\\chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+        driver.get("file:///E:\\工程表対応\\99-H28.01\\【68】審査参考情報システム\\（２）プログラムソース\\提供\\02_WebApp\\ICD10HELP\\RXSTDPCIcd10Index.html");
+
+
+
+        WebElement adrOption=driver.findElement(By.cssSelector("[href='RXSTDPCIcd10A00-B99.html']"));
+
+        adrOption.click();
+Thread.sleep(1000);
+        WebElement mySelectElm = driver.findElement(By.cssSelector("[title=\"ICD10基本分類表の章一覧を表示します。\"]"));
+
+        mySelectElm.click();
+
+
+
+
+	}
+
+}

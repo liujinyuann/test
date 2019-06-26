@@ -1,0 +1,201 @@
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+
+import com.google.common.io.Files;
+
+public class AspNetTest extends Thread {
+
+	public void run() {
+
+		DataFrom dataFrom = MainFrame.dataFrom;
+		try {
+			mainTest();
+		} catch (IOException | InterruptedException e) {
+			e.printStackTrace();
+			// メッセージを設定
+			dataFrom.setStrMsg(e.getMessage());
+			// コードを設定
+			dataFrom.setStrCode("1");
+		}
+	}
+
+	public static DataFrom mainTest() throws IOException, InterruptedException {
+		// 進捗を設定する
+		MainFrame.setIntProgress(1);
+		DataFrom dataFrom = MainFrame.dataFrom;
+		// Excel読み込み
+		ReadExcel.readExcel(dataFrom);
+		// 進捗を設定する
+		MainFrame.setIntProgress(25);
+
+		String strFilePass = "";
+		if ("纏め".equals(dataFrom.getStrOutfileType())) {
+			strFilePass = new File(dataFrom.getStrOutFolder()).getParent();
+		} else {
+			strFilePass = dataFrom.getStrOutFolder();
+		}
+		String strPass = strFilePass.concat("\\pic\\").concat(dataFrom.getStrGensin()).concat("\\");
+		// chromedriverサービスアドレス
+		System.setProperty("webdriver.chrome.driver", "D:\\chromedriver\\chromedriver.exe");
+		// WebDriverの対象
+		WebDriver driver;
+		// アクションの対象
+		Actions action;
+		// WebElement
+		WebElement Option = null;
+
+		// シート名を取得する
+		List<String> listSheetName = dataFrom.getListSheetName();
+		// Excel情報を取得する
+		List<List> listAll = dataFrom.getList();
+		// 画像出力のパス
+		String strPicPass = "";
+		// シート名
+		String strSheetName = "";
+		// 対象種類
+		String strTaishouShurui = "";
+		// 対象ID
+		String strId = "";
+		// 対象NAME
+		String strName = "";
+		// 自定義
+		String strOther = "";
+		// 項目値
+		String strValue = "";
+
+		String strArray[][];
+		// 出力リスト
+		List<String[][]> outList = new ArrayList<String[][]>();
+		// Excel情報
+		Map<String, String> dataMap = new HashMap<String, String>();
+		File file;
+
+		// 進捗を設定する
+		int intPro = 30;
+		MainFrame.setIntProgress(intPro);
+
+		for (int i = 0; i < listAll.size(); i++) {
+			// WebDriverの対象を新規に作成します
+			driver = new ChromeDriver();
+			// アクションの対象を新規に作成します
+			action = new Actions(driver);
+			// シート名
+			strSheetName = listSheetName.get(i);
+			// 画像出力のパス
+			strPicPass = strPass.concat(strSheetName).concat("\\");
+			// フォルダの存在チェック
+			file = new File(strPicPass);
+			// フォルダ存在なしの場合、新規する
+			if (!file.exists()) {
+				file.mkdirs();
+			}
+
+			List<Map> list = listAll.get(i);
+			strArray = new String[list.size()][2];
+			for (int j = 0; j < list.size(); j++) {
+				dataMap = list.get(j);
+				// 対象種類
+				strTaishouShurui = dataMap.get("TaishouShurui").toString();
+				// 対象ID
+				strId = dataMap.get("Id").toString();
+				// 対象NAME
+				strName = dataMap.get("Name").toString();
+				// 自定義
+				strOther = dataMap.get("Other").toString();
+				// 項目値
+				strValue = dataMap.get("Value").toString();
+
+				// 対象ID空以外の場合
+				if (!"".equals(strId)) {
+					Option = driver.findElement(By.id(strId));
+				} else if (!"".equals(strName)) {
+					// 対象NAME空以外の場合
+					Option = driver.findElement(By.name(strName));
+				} else if (!"".equals(strOther)) {
+					// 自定義空以外の場合
+					Option = driver.findElement(By.cssSelector("[" + strOther + "]"));
+				} else {
+					dataFrom.setStrMsg("対象が指定しない、入力ファイルの対象ID、対象NAME、自定義がご確認ください。");
+					dataFrom.setStrCode("1");
+					return dataFrom;
+				}
+
+				// 対象種類が「IE」の場合
+				if ("IE".equals(strTaishouShurui)) {
+					// 指定されたサイトを開く
+					driver.get(strId);
+					// 画像のコピー
+					filesCopy(strArray, dataMap, driver, strPicPass, j);
+				}
+
+				// 対象種類が「Edit」の場合
+				if ("Edit".equals(strTaishouShurui)) {
+					action.sendKeys(Option, strValue).perform();
+					// 画像のコピー
+					filesCopy(strArray, dataMap, driver, strPicPass, j);
+				}
+
+				// 対象種類が「Link」の場合
+				if ("Link".equals(strTaishouShurui)) {
+					action.moveToElement(Option).perform();
+					action.click().perform();
+					// 画像のコピー
+					filesCopy(strArray, dataMap, driver, strPicPass, j);
+				}
+				intPro = intPro + 5;
+				// 進捗を設定する
+				if (intPro < 85) {
+					MainFrame.setIntProgress(intPro);
+				}
+			}
+			// 出力リストを設定する
+			outList.add(strArray);
+			// ブラウザを閉じる
+			driver.quit();
+		}
+
+		// 進捗を設定する
+		MainFrame.setIntProgress(85);
+		// Excel書き込む
+		WriteExcel.writeExcel(outList, dataFrom);
+
+		return dataFrom;
+
+	}
+
+	/*
+	 * 画像のコピー
+	 */
+	public static String[][] filesCopy(String strArray[][], Map<String, String> dataMap, WebDriver driver,
+			String strPicPass, int j) throws IOException {
+		// キャプチャー
+		String strCapture = dataMap.get("Capture").toString();
+		// キャプチャー画像ID
+		String strCaptureId = dataMap.get("CaptureId").toString();
+		// 画像のファイル
+		File scrFile;
+		// キャプチャーが「要」の場合
+		if ("要".equals(strCapture)) {
+			// 画像のコピー
+			scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+			Files.copy(scrFile, new File(strPicPass.concat(strCaptureId).concat(".png")));
+			strArray[j][0] = dataMap.get("Setumei").toString();
+			strArray[j][1] = strPicPass.concat(strCaptureId).concat(".png");
+		}
+		return strArray;
+	}
+
+}

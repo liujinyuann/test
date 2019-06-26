@@ -1,0 +1,148 @@
+import java.util.Iterator;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.Sleeper;
+
+public class test {
+
+	public static void main(String[] args) throws InterruptedException {
+//		// chromedriverサービスアドレス
+//				System.setProperty("webdriver.chrome.driver", "D:\\software\\chromedriver_win32\\chromedriver.exe");
+//				// WebDriverの対象
+//				WebDriver driver = new ChromeDriver();
+//				// アクションの対象
+//				Actions action = new Actions(driver);
+//
+//
+//
+//				driver.get("https://c15rnbfg.mwprem.net/am_bin/amlogin");
+////				driver.manage().window().maximize();
+//
+//				action.sendKeys(driver.findElement(By.name("am_authid")), "jinyuan.liu").perform();
+//				action.sendKeys(driver.findElement(By.name("am_authpasswd")), "ohcc20151001").perform();
+//
+//				WebElement mySelectElm = driver.findElement(By.cssSelector("[tabindex=\"3\"]"));
+//
+//				action.clickAndHold(mySelectElm).perform();
+//
+////				mySelectElm.click();
+////				mySelectElm.sendKeys(Keys.DOWN);
+////				mySelectElm.click();
+//
+//
+//				action.moveToElement(driver.findElement(By.cssSelector("[value=\"  ログイン  \"]"))).perform();
+////				action.moveToElement(driver.findElement(By.cssSelector("[onclick=\"submitForm('login');\"]"))).perform();
+////				action.moveToElement(driver.findElement(By.cssSelector("[tabindex=\"6\"]"))).perform();
+////				action.click().perform();
+
+		System.setProperty("webdriver.chrome.driver", "D:\\software\\chromedriver_win32\\chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+        driver.get("file:///E:/test.html");
+        driver.manage().window().maximize();
+
+
+        Thread.sleep(2000);
+        driver.findElement(By.id("id2")).click();
+        Thread.sleep(2000);
+        WebElement adrOption=driver.findElement(By.cssSelector("#id2 option[value='*']"));
+        Thread.sleep(2000);
+        adrOption.click();
+        Thread.sleep(2000);
+
+
+        driver.findElement(By.id("id1")).sendKeys("4");
+
+        Select sel = new Select(driver.findElement(By.name("calc")));
+        sel.selectByValue("/");
+        Thread.sleep(2000);
+
+        driver.findElement(By.id("id3")).sendKeys("2");
+        Thread.sleep(2000);
+
+        driver.findElement(By.id("id4")).click();
+        Thread.sleep(2000);
+
+        System.out.println(driver.findElement(By.id("id5")).getAttribute("value"));
+        Thread.sleep(2000);
+
+        ////////////////////////////////////////////////////////////////
+        driver.findElement(By.id("id1")).clear();
+        Thread.sleep(2000);
+        driver.findElement(By.id("id1")).sendKeys("3");
+        Thread.sleep(2000);
+
+        Select sel2 = new Select(driver.findElement(By.name("calc")));
+        sel2.selectByValue("+");
+        Thread.sleep(2000);
+
+        driver.findElement(By.id("id3")).clear();
+        Thread.sleep(2000);
+        driver.findElement(By.id("id3")).sendKeys("1");
+        Thread.sleep(2000);
+
+        driver.findElement(By.id("id4")).click();
+        Thread.sleep(2000);
+
+        System.out.println(driver.findElement(By.id("id5")).getAttribute("value"));
+
+        ////////////////////////////////////////////////////////////////
+        driver.findElement(By.id("id1")).clear();
+        Thread.sleep(2000);
+        driver.findElement(By.id("id1")).sendKeys("5");
+        Thread.sleep(2000);
+
+        Select sel3 = new Select(driver.findElement(By.name("calc")));
+        sel3.selectByValue("*");
+        Thread.sleep(2000);
+
+        driver.findElement(By.id("id3")).clear();
+        Thread.sleep(2000);
+        driver.findElement(By.id("id3")).sendKeys("6");
+        Thread.sleep(2000);
+
+        driver.findElement(By.id("id4")).click();
+        Thread.sleep(2000);
+
+        System.out.println(driver.findElement(By.id("id5")).getAttribute("value"));
+
+        ////////////////////////////////////////////////////////////////
+        driver.findElement(By.id("id1")).clear();
+        Thread.sleep(2000);
+        driver.findElement(By.id("id1")).sendKeys("100");
+        Thread.sleep(2000);
+
+        Select sel4 = new Select(driver.findElement(By.name("calc")));
+        sel4.selectByValue("-");
+        Thread.sleep(2000);
+
+        driver.findElement(By.id("id3")).clear();
+        Thread.sleep(2000);
+        driver.findElement(By.id("id3")).sendKeys("1");
+        Thread.sleep(2000);
+
+        driver.findElement(By.id("id4")).click();
+        Thread.sleep(2000);
+
+        System.out.println(driver.findElement(By.id("id5")).getAttribute("value"));
+
+        ////////////////////////////////////////////////////////////////////////////////
+        Select selall = new Select(driver.findElement(By.name("calc")));
+
+        List<WebElement> lw= selall.getOptions();
+        Iterator<WebElement> iterator = lw.iterator();
+        while(iterator.hasNext()){
+            System.out.println(iterator.next().getAttribute("value"));
+        }
+
+        driver.quit();
+
+	}
+
+}

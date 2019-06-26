@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item value="false" key="isRegEx"/>
+		<item value="dealPotentialAlert" key="selection"/>
+		<item value="false" key="casesensitive"/>
+		<item value="false" key="incremental"/>
+		<item value="true" key="wrap"/>
+		<item value="false" key="wholeword"/>
+		<list key="findhistory">
+			<item value="dealPotentialAlert"/>
+			<item value="Chrome"/>
+			<item value="E:"/>
+			<item value="D:"/>
+			<item value="テストス"/>
+			<item value="intPro"/>
+			<item value="日誌入力"/>
+			<item value="strYukyuKyuka"/>
+			<item value="有給休暇"/>
+			<item value="休暇"/>
+			<item value="勤怠申請"/>
+			<item value="個人管理"/>
+			<item value="外出"/>
+			<item value="休假"/>
+			<item value="quickdemoLanguage"/>
+		</list>
+		<list key="replacehistory">
+			<item value="jl_inFile"/>
+			<item value="jt_indexStart"/>
+			<item value="jl_"/>
+			<item value="jt_kinouId"/>
+			<item value="jtext"/>
+			<item value="j1_kinouId"/>
+			<item value="j1_pjName"/>
+			<item value="XSSF"/>
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item value="377" key="DIALOG_WIDTH"/>
+		<item value="1|メイリオ|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|メイリオ" key="DIALOG_FONT_NAME"/>
+		<item value="421" key="DIALOG_HEIGHT"/>
+		<item value="1234" key="DIALOG_X_ORIGIN"/>
+		<item value="258" key="DIALOG_Y_ORIGIN"/>
+	</section>
+</section>
